@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
   totalBooksRead: Number,
   resumeLink: String,
   createdAt: { type: Date, default: Date.now },
-  curruntStatus: { type: String, enum: ["active", "inactive"], default: "active" },
+  currentStatus: { type: String, enum: ["active", "inactive", "blocked"], default: "active" },
 });
 
 // Encrypt password before saving

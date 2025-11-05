@@ -1,4 +1,7 @@
 const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+dotenv.config();
+
 
 exports.protect = (req, res, next) => {
   try {
@@ -8,15 +11,36 @@ exports.protect = (req, res, next) => {
         ? authHeader.split(" ")[1]
         : null;
 
-    if (!token) return res.status(401).json({ message: "Not authenticated" });
-
+    if (!token) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = { id: decoded.id, role: decoded.role };
     next();
   } catch (err) {
+    console.error("JWT Verification Error:", err.message);
     res.status(401).json({ message: "Token invalid or expired" });
   }
 };
+
+// exports.protect = (req, res, next) => {
+//   try {
+//     // console.log("JWT Secret in verification:", JSON.stringify(process.env.JWT_SECRET));
+//     const authHeader = req.headers.authorization;
+//     const token =
+//       authHeader && authHeader.startsWith("Bearer")
+//         ? authHeader.split(" ")[1]
+//         : null;
+
+//     if (!token) return res.status(401).json({ message: "Not authenticated" });
+//     const decoded = jwt.verify(token, JSON.stringify(process.env.JWT_SECRET));
+//     req.user = { id: decoded.id, role: decoded.role };
+//     next();
+//   } catch (err) {
+//     console.error(err);
+//     res.status(401).json({ message: "Token invalid or expired" });
+//   }
+// };
 
 // Restrict roles
 exports.restrictTo = (...roles) => {
@@ -26,6 +50,7 @@ exports.restrictTo = (...roles) => {
     next();
   };
 };
+
 // const requireAuth = function (req, res, next) {
 //     const token = req.cookies.jwt;
 //     // check json web token exists & is verified
