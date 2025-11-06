@@ -5,6 +5,7 @@ const generateCertificate = require("../utills/certificateGenerator");
 const path = require("path");
 const cloudinary = require("../config/cloudinary");
 const fs = require("fs");
+const User = require("../models/User");
 
 // exports.createTest = async (req, res) => {
 //   try {
@@ -147,9 +148,11 @@ exports.getTestForAttempt = async (req, res) => {
 exports.submitTest = async (req, res) => {
   try {
     const { answers } = req.body;
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ message: "User not found" });
     const test = await Test.findById(req.params.testId).select("+questions.correctAnswer");
     if (!test) return res.status(404).json({ message: "Test not found" });
-
+    
     let correct = 0;
     test.questions.forEach((q, i) => {
       if (answers[i] === q.correctAnswer) correct++;
@@ -181,8 +184,8 @@ exports.submitTest = async (req, res) => {
       const outputPath = path.join(tempDir, fileName);
 
       await generateCertificate({
-        userName: req.user.name || req.user.id,
-        quizTitle: test.subcategory,
+        userName: user.name || req.user.id,
+        courseName: test.title,
         scorePercentage,
         outputPath,
       });

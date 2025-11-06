@@ -97,6 +97,7 @@ const testSchema = new mongoose.Schema(
     // stores subcategory _id for that tech stack
     subcategory: {
       type: mongoose.Schema.Types.ObjectId,
+      ref: "TechStack",
       required: [true, "Subcategory is required"]
     },
 
