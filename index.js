@@ -13,6 +13,7 @@ const adRoute = require('./routes/adRoute');
 const testRoute = require('./routes/testRoute');
 const jobRoute = require('./routes/jobRoute');
 const companyRoute = require('./routes/companyRoute');
+const applicationRoute = require('./routes/applicationRoutes');
 // const fileUpload = require("express-fileupload");
 // const PDFDocument = require("pdfkit");
 const { PDFDocument, rgb, StandardFonts } = require("pdf-lib");
@@ -441,6 +442,7 @@ app.use('/api/v1/ads', adRoute );
 app.use('/api/test', testRoute );
 app.use('/api/v1/jobs', jobRoute );
 app.use('/api/v1/companies', companyRoute );
+app.use('/api/v1/applications', applicationRoute );     
 
 // Serve static assets in production
 // if (process.env.NODE_ENV === 'production') {
