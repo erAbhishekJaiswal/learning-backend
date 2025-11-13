@@ -177,11 +177,15 @@ exports.submitTest = async (req, res) => {
     let signedUrl = null;
 
     if (passed) {
-      const tempDir = path.join(__dirname, "..", "temp");
-      if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+      // const tempDir = path.join(__dirname, "..", "temp");
+      // if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+      // const fileName = `certificate_${attempt._id}.pdf`;
+      // const outputPath = path.join(tempDir, fileName);
 
+      const tempDir = "/tmp";
       const fileName = `certificate_${attempt._id}.pdf`;
       const outputPath = path.join(tempDir, fileName);
+
 
       await generateCertificate({
         userName: user.name || req.user.id,
