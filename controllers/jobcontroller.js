@@ -118,7 +118,6 @@ const getJobById = async (req, res) => {
     }
 };
 
-
 // Update a job
 const updateJob = async (req, res) => {
     try {

@@ -453,6 +453,6 @@ app.use('/api/v1/applications', applicationRoute );
 // }
 
 
-app.listen(port=process.env.PORT||PORT, () => {
-    console.log(`Example app listening on port http://localhost:${port}`)
+app.listen(process.env.PORT||PORT, () => {
+    console.log(`Example app listening on port http://localhost`)
 })
