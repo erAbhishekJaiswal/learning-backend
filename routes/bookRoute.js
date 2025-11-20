@@ -10,6 +10,8 @@ const {
   uploadpdfBook,
   getBookPdfLink,
   getadminAllBooks,
+  getBookPdfRange,
+  getBookPdfByPages
 } = require("../controllers/booksController");
 const fs = require("fs");
 const path = require("path");
@@ -32,6 +34,7 @@ router.use(fileUpload({
 
 router.get("/", getAllBooks);
 router.get("/admin", getadminAllBooks);
+router.get("/range/:publicId", getBookPdfRange);
 router.get("/:id", getBookById);
 router.get("/file/:publicId", getBookPdfLink);
 router.post("/uploadpdf", uploadpdfBook);

@@ -435,11 +435,11 @@ app.get('/', (req, res) => {
 app.use('/api/v1/auth', authRoute)
 app.use('/api/v1/users', require('./routes/userRoute'))
 app.use('/api/v1/techstack', require('./routes/techStackRoute'))
-app.use('/api/cloudinary', cloudinaryRoutes);
+app.use('/api/v1/cloudinary', cloudinaryRoutes);
 app.use('/api/v1/courses', courseRoute );
 app.use('/api/v1/ebooks', bookRoute );
 app.use('/api/v1/ads', adRoute );
-app.use('/api/test', testRoute );
+app.use('/api/v1/test', testRoute );
 app.use('/api/v1/jobs', jobRoute );
 app.use('/api/v1/companies', companyRoute );
 app.use('/api/v1/applications', applicationRoute );     
@@ -453,6 +453,6 @@ app.use('/api/v1/applications', applicationRoute );
 // }
 
 
-app.listen(process.env.PORT||PORT, () => {
-    console.log(`Example app listening on port http://localhost`)
+app.listen(PORT, () => {
+    console.log(`Example app listening on port http://localhost:${PORT}`)
 })

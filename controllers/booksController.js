@@ -16,6 +16,79 @@ cloudinary.config({
 //   return result.secure_url;
 // };
 
+
+
+// Add this to your booksController.js
+exports.getBookPdfByPages = async (req, res) => {
+  try {
+    const publicId = decodeURIComponent(req.params.publicId);
+    const { pages = '1-10', pageNumber } = req.query; // Support both range and single page
+    
+    // Get book info
+    const book = await Book.findOne({ filePublicId: publicId });
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    // Generate signed URL for the full PDF
+    const signedUrl = cloudinary.utils.private_download_url(publicId, "pdf", {
+      resource_type: "raw",
+      type: "authenticated",
+      expires_at: Math.floor(Date.now() / 1000) + 60 * 30, // 30 min expiry
+    });
+
+    // For now, return full URL - in production you'd implement actual page extraction
+    return res.json({ 
+      url: signedUrl, 
+      book,
+      pagesInfo: {
+        totalPages: book.totalPages || 0,
+        loadedRange: pages,
+        isComplete: false
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// New endpoint for getting specific page ranges
+exports.getBookPdfRange = async (req, res) => {
+  try {
+    const publicId = decodeURIComponent(req.params.publicId);
+    const { startPage = 1, endPage = 10 } = req.query;
+    
+    // In a real implementation, you'd use a PDF processing library
+    // to extract specific page ranges from the PDF
+    const book = await Book.findOne({ filePublicId: publicId });
+    
+    // For demo - return the full URL but with range info
+    const signedUrl = cloudinary.utils.private_download_url(publicId, "pdf", {
+      resource_type: "raw",
+      type: "authenticated",
+    });
+
+    res.json({
+      url: signedUrl,
+      range: `${startPage}-${endPage}`,
+      book: {
+        title: book.title,
+        author: book.author,
+        totalPages: book.totalPages
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+
+
+
+
+
+
 exports.uploadpdfBook = async (req, res) => {
   try {
     const {

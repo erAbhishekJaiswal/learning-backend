@@ -90,6 +90,53 @@ exports.getCompany = async (req, res) => {
     }
 };
 
+
+// GET /api/v1/companies/search?query=abc
+exports.searchCompanies = async (req, res) => {
+  try {
+    const query = req.query.query?.trim();
+
+    if (!query) {
+      const company = await Company.find().select("_id name");
+      return res.json({
+        success: true,
+        companies: company
+      });
+    }
+
+    // Check if query is a valid MongoDB ObjectId
+    const isObjectId = /^[0-9a-fA-F]{24}$/.test(query);
+
+    let companies;
+
+    if (isObjectId) {
+      // Direct match by ID for faster response
+      const company = await Company.findById({ name: query})
+        .select("_id name logoUrl industry");
+
+      companies = company ? [company] : [];
+    } else {
+      // Regex search for company name (case-insensitive)
+      companies = await Company.find({
+        name: { $regex: query, $options: "i" }
+      }).select("_id name logoUrl industry");
+    }
+
+    res.json({
+      success: true,
+      companies
+    });
+
+  } catch (error) {
+    console.error("Company search error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error during company search"
+    });
+  }
+};
+
+
 //Update a company
 exports.updateCompany = async (req, res) => {
     try {
