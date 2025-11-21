@@ -60,7 +60,7 @@ router.get("/pdf/:publicId", getSignedResumePdfLink);
 router.get("/", getAllApplications);
 router.delete("/deleteall", deleteAllApplications);
 router.get("/job/:jobId", getApplicationsByJob);
-router.patch("/:id/status", updateApplicationStatus);
+router.put("/:id/status", updateApplicationStatus);
 router.delete("/:id", deleteApplication);
 
 
