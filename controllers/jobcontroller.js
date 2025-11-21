@@ -105,6 +105,67 @@ const getAllJobs = async (req, res) => {
     }
 };
 
+// GET /api/v1/jobs  (For Admin)
+const getAllJobsForAdmin = async (req, res) => {
+  try {
+    const jobs = await Job.find()
+      .populate("company", "companyName logoUrl industry");
+
+    res.status(200).json(jobs);
+  } catch (error) {
+    console.error("Error fetching jobs:", error);
+    res.status(500).json({ message: "Server error while fetching jobs" });
+  }
+};
+
+// PUT /api/v1/jobs/:id
+const updateJob = async (req, res) => {
+  try {
+    const jobId = req.params.id;
+
+    const updatedJob = await Job.findByIdAndUpdate(
+      jobId,
+      req.body,
+      { new: true }
+    );
+
+    if (!updatedJob) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    res.status(200).json({
+      message: "Job updated successfully",
+      job: updatedJob
+    });
+  } catch (error) {
+    console.error("Error updating job:", error);
+    res.status(500).json({ message: "Server error while updating job" });
+  }
+};
+
+// DELETE /api/v1/jobs/:id
+const deleteJob = async (req, res) => {
+  try {
+    const jobId = req.params.id;
+    const deletedJob = await Job.findByIdAndDelete(jobId);
+
+    if (!deletedJob) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    res.status(200).json({
+      message: "Job deleted successfully"
+    });
+  } catch (error) {
+    console.error("Error deleting job:", error);
+    res.status(500).json({ message: "Server error while deleting job" });
+  }
+};
+
+
+
+
+
 // Get a single job
 const getJobById = async (req, res) => {
     try {
@@ -119,32 +180,32 @@ const getJobById = async (req, res) => {
 };
 
 // Update a job
-const updateJob = async (req, res) => {
-    try {
-        const job = await Job.findByIdAndUpdate(req.params.id, req.body, {
-            new: true,
-        });
-        if (!job) {
-            return res.status(404).json({ error: "Job not found" });
-        }
-        res.status(200).json(job);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
+// const updateJob = async (req, res) => {
+//     try {
+//         const job = await Job.findByIdAndUpdate(req.params.id, req.body, {
+//             new: true,
+//         });
+//         if (!job) {
+//             return res.status(404).json({ error: "Job not found" });
+//         }
+//         res.status(200).json(job);
+//     } catch (error) {
+//         res.status(500).json({ error: error.message });
+//     }
+// };
 
-// Delete a job
-const deleteJob = async (req, res) => {
-    try {
-        const job = await Job.findByIdAndDelete(req.params.id);
-        if (!job) {
-            return res.status(404).json({ error: "Job not found" });
-        }
-        res.status(200).json({ message: "Job deleted successfully" });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
+// // Delete a job
+// const deleteJob = async (req, res) => {
+//     try {
+//         const job = await Job.findByIdAndDelete(req.params.id);
+//         if (!job) {
+//             return res.status(404).json({ error: "Job not found" });
+//         }
+//         res.status(200).json({ message: "Job deleted successfully" });
+//     } catch (error) {
+//         res.status(500).json({ error: error.message });
+//     }
+// };
 
 
-module.exports = { createJob, getAllJobs, getJobById, updateJob, deleteJob };
+module.exports = { createJob, getAllJobs, getAllJobsForAdmin, getJobById, updateJob, deleteJob };
