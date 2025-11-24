@@ -292,6 +292,20 @@ exports.getTestResults = async (req, res) => {
   }
 };
 
+// update the test data by id
+exports.updateTest = async (req, res) => {
+  try {
+    const test = await Test.findByIdAndUpdate(req.params.testId, req.body, {
+      new: true,
+    });
+    if (!test) return res.status(404).json({ message: "Test not found" });
+    res.json(test);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
 // delete testresult
 exports.deleteTestResult = async (req, res) => {
   try {

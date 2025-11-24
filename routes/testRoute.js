@@ -10,7 +10,8 @@ const {
   deleteTestResult,
   getTestList,
   deleteAllTestResult,
-  getCertificateById
+  getCertificateById,
+  updateTest
 } = require("../controllers/testController");
 const { protect } = require("../middleware/authMiddleware");
 const router = express.Router();
@@ -23,6 +24,7 @@ router.get("/", getAllTests);
 router.get("/:bookId", getTestForAttempt);
 router.get("/attempts/:id/certificate",  getCertificateById);
 router.get("/:testId/attempt", protect, getTestResults);
+router.put('/:testId', updateTest)
 router.delete("/:attemptId", deleteTestResult);
 router.delete("/alltests/attempt", deleteAllTestResult);
 router.post("/:testId/submit", protect, submitTest);

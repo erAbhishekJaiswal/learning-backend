@@ -18,7 +18,7 @@ exports.createTechStack = async (req, res) => {
 
     const newTechStack = new TechStack({
       name,
-      icon,
+      // icon,
       description,
       popularityScore,
       subcategories,
