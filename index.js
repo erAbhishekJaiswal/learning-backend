@@ -14,6 +14,7 @@ const testRoute = require('./routes/testRoute');
 const jobRoute = require('./routes/jobRoute');
 const companyRoute = require('./routes/companyRoute');
 const applicationRoute = require('./routes/applicationRoutes');
+const visitorRoutes = require("./routes/visitorRoutes");
 // const fileUpload = require("express-fileupload");
 // const PDFDocument = require("pdfkit");
 const { PDFDocument, rgb, StandardFonts } = require("pdf-lib");
@@ -431,7 +432,7 @@ app.get('/', (req, res) => {
 //     res.status(500).send("Error generating certificate");
 //   }
 // });
-
+app.use("/api/v1/visitors", visitorRoutes);
 app.use('/api/v1/auth', authRoute)
 app.use('/api/v1/users', require('./routes/userRoute'))
 app.use('/api/v1/techstack', require('./routes/techStackRoute'))
