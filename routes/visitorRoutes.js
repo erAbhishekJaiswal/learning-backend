@@ -39,6 +39,41 @@ router.post("/count", async (req, res) => {
   }
 });
 
+// without ip tracking and just track number of visitors
+router.get("/view/count", async (req, res) => {
+  try {
+    const today = new Date().toISOString().split("T")[0]; // yyyy-mm-dd
+
+    // Find today's visitor record
+    let visitor = await Visitor.findOne({ date: today });
+
+    if (!visitor) {
+      // Create new record for today
+      visitor = new Visitor({
+        date: today,
+        visitors: 0,
+        visitorIPs: [],
+        withoutIP: 1, // first visitor of today
+      });
+      await visitor.save();
+    } else {
+      // Increment without-IP visitor count
+      visitor.withoutIP += 1;
+      await visitor.save();
+    }
+
+    // Get total count from all days
+    const totalWithoutIP = await Visitor.aggregate([
+      { $group: { _id: null, total: { $sum: "$withoutIP" } } }
+    ]);
+
+    res.json({ totalVisitors: totalWithoutIP[0]?.total || 0 });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
 
 router.get("/report", async (req, res) => {
   try {

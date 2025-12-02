@@ -1,6 +1,5 @@
 const express = require('express')
 const app = express()
-const PORT = 8000
 const connectDB = require('./config/db')
 const dotenv = require('dotenv')
 const path = require('path')
@@ -15,13 +14,15 @@ const jobRoute = require('./routes/jobRoute');
 const companyRoute = require('./routes/companyRoute');
 const applicationRoute = require('./routes/applicationRoutes');
 const visitorRoutes = require("./routes/visitorRoutes");
+dotenv.config()
 // const fileUpload = require("express-fileupload");
 // const PDFDocument = require("pdfkit");
 const { PDFDocument, rgb, StandardFonts } = require("pdf-lib");
 const qr = require("qrcode");
 const fs = require("fs");
+const PORT = process.env.PORT || 8000
 
-dotenv.config()
+
 app.use(express.json())
 app.use(cors())
 
@@ -454,6 +455,6 @@ app.use('/api/v1/applications', applicationRoute );
 // }
 
 
-app.listen(PORT, () => {
+app.listen( PORT, () => {
     console.log(`Example app listening on port http://localhost:${PORT}`)
 })
