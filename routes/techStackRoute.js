@@ -8,12 +8,13 @@ const {
     updateTechStack,
     deleteTechStack,
 } = require("../controllers/techStackController");
+const { protect } = require("../middleware/authMiddleware");
 
 router.get("/", getAllTechStack);
 router.get("/:id", getCategoryById);
 router.get("/:id/:subCategoryName", getSubCategory);
-router.post("/", createTechStack);
-router.put("/:id", updateTechStack);
-router.delete("/:id", deleteTechStack);
+router.post("/", protect, createTechStack);
+router.put("/:id", protect, updateTechStack);
+router.delete("/:id", protect, deleteTechStack);
 
 module.exports = router;

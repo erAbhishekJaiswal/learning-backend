@@ -10,13 +10,14 @@ const {
   getBooksByTechStack,
   getBooksByCategory,
 } = require("../controllers/courseController");
+const { protect } = require("../middleware/authMiddleware");
 
 router.get("/", getAllCourses);
 router.get("/:id", getCourseById);
-router.post("/", createCourse);
-router.put("/:id", updateCourse);
-router.put("/thumbnail/:id", uploadThumbnail);
-router.put("/ebook/:id", uploadEbook);
+router.post("/", protect, createCourse);
+router.put("/:id", protect, updateCourse);
+router.put("/thumbnail/:id", protect, uploadThumbnail);
+router.put("/ebook/:id", protect, uploadEbook);
 router.get("/techstack/:techStackId", getBooksByTechStack);
 router.get("/category/:categoryId", getBooksByCategory);
 

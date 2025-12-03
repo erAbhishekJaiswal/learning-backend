@@ -18,7 +18,7 @@ const path = require("path");
 const cloudinary = require("cloudinary").v2;
 const Book = require("../models/Book");
 const fileUpload = require("express-fileupload");
-
+const { protect } = require("../middleware/authMiddleware");
 require("dotenv").config();
 
 cloudinary.config({
@@ -33,14 +33,14 @@ router.use(fileUpload({
 }));
 
 router.get("/", getAllBooks);
-router.get("/admin", getadminAllBooks);
+router.get("/admin", protect, getadminAllBooks);
 router.get("/range/:publicId", getBookPdfRange);
 router.get("/:id", getBookById);
 router.get("/file/:publicId", getBookPdfLink);
-router.post("/uploadpdf", uploadpdfBook);
-router.post("/", createBook);
-router.put("/:id", updateBook);
-router.delete("/:id", deleteBook);
+router.post("/uploadpdf", protect, uploadpdfBook);
+router.post("/", protect, createBook);
+router.put("/:id", protect, updateBook);
+router.delete("/:id", protect, deleteBook);
 
 
 // ✅ UPLOAD BOOK PDF & COVER

@@ -17,16 +17,16 @@ const { protect } = require("../middleware/authMiddleware");
 const router = express.Router();
 
 
-router.post("/", createTest);
-router.post("/:testId/questions", addQuestion);
-router.get("/attempt/tests", getTestList);
-router.get("/", getAllTests);
-router.get("/:bookId", getTestForAttempt);
-router.get("/attempts/:id/certificate",  getCertificateById);
+router.post("/", protect, createTest);
+router.post("/:testId/questions", protect, addQuestion);
+router.get("/attempt/tests", protect, getTestList);
+router.get("/", protect, getAllTests);
+router.get("/:bookId", protect, getTestForAttempt);
+router.get("/attempts/:id/certificate", protect,  getCertificateById);
 router.get("/:testId/attempt", protect, getTestResults);
-router.put('/:testId', updateTest)
-router.delete("/:attemptId", deleteTestResult);
-router.delete("/alltests/attempt", deleteAllTestResult);
+router.put('/:testId', protect, updateTest)
+router.delete("/:attemptId", protect, deleteTestResult);
+router.delete("/alltests/attempt", protect, deleteAllTestResult);
 router.post("/:testId/submit", protect, submitTest);
-router.delete("/:testId", deleteTest);
+router.delete("/:testId", protect, deleteTest);
 module.exports = router;

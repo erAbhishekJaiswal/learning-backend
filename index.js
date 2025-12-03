@@ -442,9 +442,9 @@ app.use('/api/v1/courses', courseRoute );
 app.use('/api/v1/ebooks', bookRoute );
 app.use('/api/v1/ads', adRoute );
 app.use('/api/v1/test', testRoute );
-app.use('/api/v1/jobs', jobRoute );
-app.use('/api/v1/companies', companyRoute );
-app.use('/api/v1/applications', applicationRoute );     
+// app.use('/api/v1/jobs', jobRoute );
+// app.use('/api/v1/companies', companyRoute );
+// app.use('/api/v1/applications', applicationRoute );     
 
 // Serve static assets in production
 // if (process.env.NODE_ENV === 'production') {
