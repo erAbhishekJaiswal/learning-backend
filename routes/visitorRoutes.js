@@ -9,7 +9,7 @@ router.post("/count", async (req, res) => {
     const clientIp = requestIp.getClientIp(req);
     const today = new Date().toISOString().split("T")[0];
 
-    let record = await Visitor.findOne({ date: today });
+    let record = await Visitor.find({ date: today });
 
     if (!record) {
       record = await Visitor.create({
