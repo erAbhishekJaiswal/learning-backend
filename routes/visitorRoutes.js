@@ -9,7 +9,7 @@ router.post("/count", async (req, res) => {
     const clientIp = requestIp.getClientIp(req);
     const today = new Date().toISOString().split("T")[0];
 
-    let record = await Visitor.find({ date: today });
+    let record = await Visitor.findOne({ date: today });  // FIXED
 
     if (!record) {
       record = await Visitor.create({
@@ -39,30 +39,26 @@ router.post("/count", async (req, res) => {
   }
 });
 
-// without ip tracking and just track number of visitors
+
 router.get("/view/count", async (req, res) => {
   try {
-    const today = new Date().toISOString().split("T")[0]; // yyyy-mm-dd
+    const today = new Date().toISOString().split("T")[0];
 
-    // Find today's visitor record
-    let visitor = await Visitor.find({ date: today });
+    let visitor = await Visitor.findOne({ date: today });  // FIXED
 
     if (!visitor) {
-      // Create new record for today
       visitor = new Visitor({
         date: today,
         visitors: 0,
         visitorIPs: [],
-        withoutIP: 1, // first visitor of today
+        withoutIP: 1,
       });
       await visitor.save();
     } else {
-      // Increment without-IP visitor count
       visitor.withoutIP += 1;
       await visitor.save();
     }
 
-    // Get total count from all days
     const totalWithoutIP = await Visitor.aggregate([
       { $group: { _id: null, total: { $sum: "$withoutIP" } } }
     ]);
