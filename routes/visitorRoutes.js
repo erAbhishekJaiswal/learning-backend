@@ -45,7 +45,7 @@ router.get("/view/count", async (req, res) => {
     const today = new Date().toISOString().split("T")[0]; // yyyy-mm-dd
 
     // Find today's visitor record
-    let visitor = await Visitor.findOne({ date: today });
+    let visitor = await Visitor.find({ date: today });
 
     if (!visitor) {
       // Create new record for today
