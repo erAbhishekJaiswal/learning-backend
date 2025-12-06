@@ -27,6 +27,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+
 router.use(fileUpload({
   useTempFiles: true,
   tempFileDir: "/tmp"
@@ -35,12 +36,31 @@ router.use(fileUpload({
 router.get("/", getAllBooks);
 router.get("/admin", protect, getadminAllBooks);
 router.get("/range/:publicId", getBookPdfRange);
-router.get("/:id", getBookById);
 router.get("/file/:publicId", getBookPdfLink);
+
 router.post("/uploadpdf", protect, uploadpdfBook);
 router.post("/", protect, createBook);
 router.put("/:id", protect, updateBook);
 router.delete("/:id", protect, deleteBook);
+
+// MUST BE LAST
+router.get("/:id", getBookById);
+
+
+// router.use(fileUpload({
+//   useTempFiles: true,
+//   tempFileDir: "/tmp"
+// }));
+
+// router.get("/", getAllBooks);
+// router.get("/admin", protect, getadminAllBooks);
+// router.get("/range/:publicId", getBookPdfRange);
+// router.get("/:id", getBookById);
+// router.get("/file/:publicId", getBookPdfLink);
+// router.post("/uploadpdf", protect, uploadpdfBook);
+// router.post("/", protect, createBook);
+// router.put("/:id", protect, updateBook);
+// router.delete("/:id", protect, deleteBook);
 
 
 // ✅ UPLOAD BOOK PDF & COVER
